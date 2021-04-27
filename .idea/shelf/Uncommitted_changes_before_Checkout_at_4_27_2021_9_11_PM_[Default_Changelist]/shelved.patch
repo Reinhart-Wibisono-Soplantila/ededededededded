@@ -1,0 +1,470 @@
+Index: app/src/main/res/layout/provinsilist_fragment.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    xmlns:tools=\"http://schemas.android.com/tools\"\r\n    android:id=\"@+id/main\"\r\n    android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\"\r\n    tools:context=\".ui.provinsi.ProvinsiListFragment\">\r\n\r\n   <ListView\r\n       android:id=\"@+id/list_view_provinsi\"\r\n       android:layout_width=\"wrap_content\"\r\n       android:layout_height=\"wrap_content\" />\r\n</LinearLayout>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/provinsilist_fragment.xml	(revision 2ae3edaac22ccfc970562aa39fc97340903030de)
++++ app/src/main/res/layout/provinsilist_fragment.xml	(date 1618369287096)
+@@ -6,8 +6,9 @@
+     android:layout_height="match_parent"
+     tools:context=".ui.provinsi.ProvinsiListFragment">
+ 
+-   <ListView
+-       android:id="@+id/list_view_provinsi"
+-       android:layout_width="wrap_content"
+-       android:layout_height="wrap_content" />
++   <androidx.recyclerview.widget.RecyclerView
++       android:layout_width="match_parent"
++       android:layout_height="match_parent"
++       android:id="@+id/recyclerview"/>
++
+ </LinearLayout>
+Index: app/src/main/res/layout/recyclerview_item_provinsi.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<LinearLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    android:orientation=\"vertical\" android:layout_width=\"match_parent\"\r\n    android:layout_height=\"match_parent\">\r\n\r\n</LinearLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/layout/recyclerview_item_provinsi.xml	(revision 2ae3edaac22ccfc970562aa39fc97340903030de)
++++ app/src/main/res/layout/recyclerview_item_provinsi.xml	(date 1618370712676)
+@@ -1,6 +1,25 @@
+ <?xml version="1.0" encoding="utf-8"?>
+-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+-    android:orientation="vertical" android:layout_width="match_parent"
+-    android:layout_height="match_parent">
++<LinearLayout
++    xmlns:android="http://schemas.android.com/apk/res/android"
++    xmlns:tools="http://schemas.android.com/tools"
++    android:orientation="vertical"
++    android:layout_width="match_parent"
++    android:layout_height="wrap_content"
++    android:padding="16dp">
++
++    <TextView
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:id="@+id/nama_provinsi"
++        android:textSize="20sp"
++        android:textStyle="bold"
++        tools:text="@string/nama_provinsi"/>
++
++    <TextView
++        android:layout_width="match_parent"
++        android:layout_height="wrap_content"
++        android:id="@+id/data_provinsi"
++        tools:text="@string/data_provinsi"/>
++
+ 
+ </LinearLayout>
+\ No newline at end of file
+Index: app/src/main/java/id/ac/unhas/infocovid19/model/DataProvinsi.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package id.ac.unhas.infocovid19.model\r\n\r\ndata class DataProvinsi(\r\n    val data: List<Provinsi?>?\r\n){\r\n    override fun toString(): String {\r\n        var stringOutput = \"\"\r\n        data?.forEach{\r\n            stringOutput += it.toString()\r\n        }\r\n        return stringOutput\r\n    }\r\n}\r\n\r\ndata class Provinsi(\r\n    val provinsi: String?,\r\n    val kasus: Int?,\r\n    val dirawat: Int?,\r\n    val sembuh: Int?,\r\n    val meninggal: Int?\r\n){\r\n    override fun toString(): String {\r\n        return \"Provinsi ${this.provinsi}[kode: ${this.provinsi}, #positif: ${this.kasus}, #meninggal: ${this.meninggal}, #sembuh:${this.sembuh}]\"\r\n    }\r\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/id/ac/unhas/infocovid19/model/DataProvinsi.kt	(revision 2ae3edaac22ccfc970562aa39fc97340903030de)
++++ app/src/main/java/id/ac/unhas/infocovid19/model/DataProvinsi.kt	(date 1619251027447)
+@@ -1,5 +1,24 @@
+ package id.ac.unhas.infocovid19.model
+ 
++import java.util.jar.Attributes
++
++class DataProvinsi :
++ArrayList<DataProvinsiItem>()
++
++data class DataProvinsiItem(
++    val attributes: Provinsi?
++)
++
++data class Provinsi(
++    val FID: Int,
++    val Kasus_Meni: Int,
++    val Kasus_Posi: Int,
++    val Kasus_Semb: Int,
++    val Kode_Provi: Int,
++    val Provinsi: String
++)
++
++/**
+ data class DataProvinsi(
+     val data: List<Provinsi?>?
+ ){
+@@ -22,4 +41,5 @@
+     override fun toString(): String {
+         return "Provinsi ${this.provinsi}[kode: ${this.provinsi}, #positif: ${this.kasus}, #meninggal: ${this.meninggal}, #sembuh:${this.sembuh}]"
+     }
+-}
+\ No newline at end of file
++}
++        */
+\ No newline at end of file
+Index: app/src/main/assets/provinsi.json
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>{\"data\":[{\"provinsi\":\"DKI JAKARTA\",\"kasus\":388338,\"dirawat\":6248,\"sembuh\":375694,\"meninggal\":6396},{\"provinsi\":\"JAWA BARAT\",\"kasus\":255230,\"dirawat\":24772,\"sembuh\":227132,\"meninggal\":3326},{\"provinsi\":\"JAWA TENGAH\",\"kasus\":171870,\"dirawat\":30760,\"sembuh\":133687,\"meninggal\":7423},{\"provinsi\":\"JAWA TIMUR\",\"kasus\":141414,\"dirawat\":3245,\"sembuh\":128229,\"meninggal\":9940},{\"provinsi\":\"KALIMANTAN TIMUR\",\"kasus\":64857,\"dirawat\":2514,\"sembuh\":60790,\"meninggal\":1553},{\"provinsi\":\"SULAWESI SELATAN\",\"kasus\":60311,\"dirawat\":641,\"sembuh\":58757,\"meninggal\":913},{\"provinsi\":\"BANTEN\",\"kasus\":44534,\"dirawat\":2062,\"sembuh\":41332,\"meninggal\":1140},{\"provinsi\":\"BALI\",\"kasus\":41054,\"dirawat\":2097,\"sembuh\":37926,\"meninggal\":1031},{\"provinsi\":\"RIAU\",\"kasus\":36008,\"dirawat\":1615,\"sembuh\":33504,\"meninggal\":889},{\"provinsi\":\"DAERAH ISTIMEWA YOGYAKARTA\",\"kasus\":34783,\"dirawat\":4882,\"sembuh\":29064,\"meninggal\":837},{\"provinsi\":\"SUMATERA BARAT\",\"kasus\":32440,\"dirawat\":1292,\"sembuh\":30448,\"meninggal\":700},{\"provinsi\":\"KALIMANTAN SELATAN\",\"kasus\":29317,\"dirawat\":2959,\"sembuh\":25498,\"meninggal\":860},{\"provinsi\":\"SUMATERA UTARA\",\"kasus\":27848,\"dirawat\":2378,\"sembuh\":24547,\"meninggal\":923},{\"provinsi\":\"PAPUA\",\"kasus\":19788,\"dirawat\":8921,\"sembuh\":10662,\"meninggal\":205},{\"provinsi\":\"SUMATERA SELATAN\",\"kasus\":18188,\"dirawat\":1418,\"sembuh\":15910,\"meninggal\":860},{\"provinsi\":\"KALIMANTAN TENGAH\",\"kasus\":17846,\"dirawat\":2693,\"sembuh\":14753,\"meninggal\":400},{\"provinsi\":\"SULAWESI UTARA\",\"kasus\":15404,\"dirawat\":2372,\"sembuh\":12530,\"meninggal\":502},{\"provinsi\":\"LAMPUNG\",\"kasus\":14316,\"dirawat\":525,\"sembuh\":13016,\"meninggal\":775},{\"provinsi\":\"NUSA TENGGARA TIMUR\",\"kasus\":12684,\"dirawat\":1754,\"sembuh\":10584,\"meninggal\":346},{\"provinsi\":\"SULAWESI TENGAH\",\"kasus\":11424,\"dirawat\":757,\"sembuh\":10363,\"meninggal\":304},{\"provinsi\":\"KALIMANTAN UTARA\",\"kasus\":11302,\"dirawat\":1517,\"sembuh\":9607,\"meninggal\":178},{\"provinsi\":\"SULAWESI TENGGARA\",\"kasus\":10298,\"dirawat\":424,\"sembuh\":9668,\"meninggal\":206},{\"provinsi\":\"ACEH\",\"kasus\":9985,\"dirawat\":1458,\"sembuh\":8129,\"meninggal\":398},{\"provinsi\":\"KEPULAUAN BANGKA BELITUNG\",\"kasus\":9889,\"dirawat\":830,\"sembuh\":8894,\"meninggal\":165},{\"provinsi\":\"NUSA TENGGARA BARAT\",\"kasus\":9731,\"dirawat\":2085,\"sembuh\":7280,\"meninggal\":366},{\"provinsi\":\"KEPULAUAN RIAU\",\"kasus\":9415,\"dirawat\":361,\"sembuh\":8822,\"meninggal\":232},{\"provinsi\":\"PAPUA BARAT\",\"kasus\":8452,\"dirawat\":403,\"sembuh\":7910,\"meninggal\":139},{\"provinsi\":\"MALUKU\",\"kasus\":7392,\"dirawat\":359,\"sembuh\":6921,\"meninggal\":112},{\"provinsi\":\"JAMBI\",\"kasus\":6512,\"dirawat\":1175,\"sembuh\":5241,\"meninggal\":96},{\"provinsi\":\"KALIMANTAN BARAT\",\"kasus\":6167,\"dirawat\":483,\"sembuh\":5650,\"meninggal\":34},{\"provinsi\":\"BENGKULU\",\"kasus\":5619,\"dirawat\":311,\"sembuh\":5150,\"meninggal\":158},{\"provinsi\":\"SULAWESI BARAT\",\"kasus\":5375,\"dirawat\":64,\"sembuh\":5197,\"meninggal\":114},{\"provinsi\":\"GORONTALO\",\"kasus\":5225,\"dirawat\":202,\"sembuh\":4873,\"meninggal\":150},{\"provinsi\":\"MALUKU UTARA\",\"kasus\":4351,\"dirawat\":540,\"sembuh\":3691,\"meninggal\":120}]}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/assets/provinsi.json	(revision 2ae3edaac22ccfc970562aa39fc97340903030de)
++++ app/src/main/assets/provinsi.json	(date 1619229896803)
+@@ -1,1 +1,12 @@
+-{"data":[{"provinsi":"DKI JAKARTA","kasus":388338,"dirawat":6248,"sembuh":375694,"meninggal":6396},{"provinsi":"JAWA BARAT","kasus":255230,"dirawat":24772,"sembuh":227132,"meninggal":3326},{"provinsi":"JAWA TENGAH","kasus":171870,"dirawat":30760,"sembuh":133687,"meninggal":7423},{"provinsi":"JAWA TIMUR","kasus":141414,"dirawat":3245,"sembuh":128229,"meninggal":9940},{"provinsi":"KALIMANTAN TIMUR","kasus":64857,"dirawat":2514,"sembuh":60790,"meninggal":1553},{"provinsi":"SULAWESI SELATAN","kasus":60311,"dirawat":641,"sembuh":58757,"meninggal":913},{"provinsi":"BANTEN","kasus":44534,"dirawat":2062,"sembuh":41332,"meninggal":1140},{"provinsi":"BALI","kasus":41054,"dirawat":2097,"sembuh":37926,"meninggal":1031},{"provinsi":"RIAU","kasus":36008,"dirawat":1615,"sembuh":33504,"meninggal":889},{"provinsi":"DAERAH ISTIMEWA YOGYAKARTA","kasus":34783,"dirawat":4882,"sembuh":29064,"meninggal":837},{"provinsi":"SUMATERA BARAT","kasus":32440,"dirawat":1292,"sembuh":30448,"meninggal":700},{"provinsi":"KALIMANTAN SELATAN","kasus":29317,"dirawat":2959,"sembuh":25498,"meninggal":860},{"provinsi":"SUMATERA UTARA","kasus":27848,"dirawat":2378,"sembuh":24547,"meninggal":923},{"provinsi":"PAPUA","kasus":19788,"dirawat":8921,"sembuh":10662,"meninggal":205},{"provinsi":"SUMATERA SELATAN","kasus":18188,"dirawat":1418,"sembuh":15910,"meninggal":860},{"provinsi":"KALIMANTAN TENGAH","kasus":17846,"dirawat":2693,"sembuh":14753,"meninggal":400},{"provinsi":"SULAWESI UTARA","kasus":15404,"dirawat":2372,"sembuh":12530,"meninggal":502},{"provinsi":"LAMPUNG","kasus":14316,"dirawat":525,"sembuh":13016,"meninggal":775},{"provinsi":"NUSA TENGGARA TIMUR","kasus":12684,"dirawat":1754,"sembuh":10584,"meninggal":346},{"provinsi":"SULAWESI TENGAH","kasus":11424,"dirawat":757,"sembuh":10363,"meninggal":304},{"provinsi":"KALIMANTAN UTARA","kasus":11302,"dirawat":1517,"sembuh":9607,"meninggal":178},{"provinsi":"SULAWESI TENGGARA","kasus":10298,"dirawat":424,"sembuh":9668,"meninggal":206},{"provinsi":"ACEH","kasus":9985,"dirawat":1458,"sembuh":8129,"meninggal":398},{"provinsi":"KEPULAUAN BANGKA BELITUNG","kasus":9889,"dirawat":830,"sembuh":8894,"meninggal":165},{"provinsi":"NUSA TENGGARA BARAT","kasus":9731,"dirawat":2085,"sembuh":7280,"meninggal":366},{"provinsi":"KEPULAUAN RIAU","kasus":9415,"dirawat":361,"sembuh":8822,"meninggal":232},{"provinsi":"PAPUA BARAT","kasus":8452,"dirawat":403,"sembuh":7910,"meninggal":139},{"provinsi":"MALUKU","kasus":7392,"dirawat":359,"sembuh":6921,"meninggal":112},{"provinsi":"JAMBI","kasus":6512,"dirawat":1175,"sembuh":5241,"meninggal":96},{"provinsi":"KALIMANTAN BARAT","kasus":6167,"dirawat":483,"sembuh":5650,"meninggal":34},{"provinsi":"BENGKULU","kasus":5619,"dirawat":311,"sembuh":5150,"meninggal":158},{"provinsi":"SULAWESI BARAT","kasus":5375,"dirawat":64,"sembuh":5197,"meninggal":114},{"provinsi":"GORONTALO","kasus":5225,"dirawat":202,"sembuh":4873,"meninggal":150},{"provinsi":"MALUKU UTARA","kasus":4351,"dirawat":540,"sembuh":3691,"meninggal":120}]}
+\ No newline at end of file
++{"data":[
++  {"provinsi":"DKI JAKARTA",
++    "kasus":388338,
++    "dirawat":6248,
++    "sembuh":375694,
++    "meninggal":6396
++  },{"provinsi":"JAWA BARAT",
++    "kasus":255230,
++    "dirawat":24772,
++    "sembuh":227132,
++    "meninggal":3326
++  },{"provinsi":"JAWA TENGAH","kasus":171870,"dirawat":30760,"sembuh":133687,"meninggal":7423},{"provinsi":"JAWA TIMUR","kasus":141414,"dirawat":3245,"sembuh":128229,"meninggal":9940},{"provinsi":"KALIMANTAN TIMUR","kasus":64857,"dirawat":2514,"sembuh":60790,"meninggal":1553},{"provinsi":"SULAWESI SELATAN","kasus":60311,"dirawat":641,"sembuh":58757,"meninggal":913},{"provinsi":"BANTEN","kasus":44534,"dirawat":2062,"sembuh":41332,"meninggal":1140},{"provinsi":"BALI","kasus":41054,"dirawat":2097,"sembuh":37926,"meninggal":1031},{"provinsi":"RIAU","kasus":36008,"dirawat":1615,"sembuh":33504,"meninggal":889},{"provinsi":"DAERAH ISTIMEWA YOGYAKARTA","kasus":34783,"dirawat":4882,"sembuh":29064,"meninggal":837},{"provinsi":"SUMATERA BARAT","kasus":32440,"dirawat":1292,"sembuh":30448,"meninggal":700},{"provinsi":"KALIMANTAN SELATAN","kasus":29317,"dirawat":2959,"sembuh":25498,"meninggal":860},{"provinsi":"SUMATERA UTARA","kasus":27848,"dirawat":2378,"sembuh":24547,"meninggal":923},{"provinsi":"PAPUA","kasus":19788,"dirawat":8921,"sembuh":10662,"meninggal":205},{"provinsi":"SUMATERA SELATAN","kasus":18188,"dirawat":1418,"sembuh":15910,"meninggal":860},{"provinsi":"KALIMANTAN TENGAH","kasus":17846,"dirawat":2693,"sembuh":14753,"meninggal":400},{"provinsi":"SULAWESI UTARA","kasus":15404,"dirawat":2372,"sembuh":12530,"meninggal":502},{"provinsi":"LAMPUNG","kasus":14316,"dirawat":525,"sembuh":13016,"meninggal":775},{"provinsi":"NUSA TENGGARA TIMUR","kasus":12684,"dirawat":1754,"sembuh":10584,"meninggal":346},{"provinsi":"SULAWESI TENGAH","kasus":11424,"dirawat":757,"sembuh":10363,"meninggal":304},{"provinsi":"KALIMANTAN UTARA","kasus":11302,"dirawat":1517,"sembuh":9607,"meninggal":178},{"provinsi":"SULAWESI TENGGARA","kasus":10298,"dirawat":424,"sembuh":9668,"meninggal":206},{"provinsi":"ACEH","kasus":9985,"dirawat":1458,"sembuh":8129,"meninggal":398},{"provinsi":"KEPULAUAN BANGKA BELITUNG","kasus":9889,"dirawat":830,"sembuh":8894,"meninggal":165},{"provinsi":"NUSA TENGGARA BARAT","kasus":9731,"dirawat":2085,"sembuh":7280,"meninggal":366},{"provinsi":"KEPULAUAN RIAU","kasus":9415,"dirawat":361,"sembuh":8822,"meninggal":232},{"provinsi":"PAPUA BARAT","kasus":8452,"dirawat":403,"sembuh":7910,"meninggal":139},{"provinsi":"MALUKU","kasus":7392,"dirawat":359,"sembuh":6921,"meninggal":112},{"provinsi":"JAMBI","kasus":6512,"dirawat":1175,"sembuh":5241,"meninggal":96},{"provinsi":"KALIMANTAN BARAT","kasus":6167,"dirawat":483,"sembuh":5650,"meninggal":34},{"provinsi":"BENGKULU","kasus":5619,"dirawat":311,"sembuh":5150,"meninggal":158},{"provinsi":"SULAWESI BARAT","kasus":5375,"dirawat":64,"sembuh":5197,"meninggal":114},{"provinsi":"GORONTALO","kasus":5225,"dirawat":202,"sembuh":4873,"meninggal":150},{"provinsi":"MALUKU UTARA","kasus":4351,"dirawat":540,"sembuh":3691,"meninggal":120}]}
+\ No newline at end of file
+Index: app/src/main/java/id/ac/unhas/infocovid19/ui/provinsi/ProvinsiViewModel.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package id.ac.unhas.infocovid19.ui.provinsi\r\n\r\nimport androidx.lifecycle.ViewModel\r\nimport id.ac.unhas.infocovid19.model.Provinsi\r\n\r\nclass ProvinsiViewModel(\r\n    private val repository: ProvinsiRepository\r\n) : ViewModel() {\r\n    private var _provinsis = ArrayList<Provinsi>()\r\n    val provinsis:ArrayList<Provinsi>\r\n        get() = _provinsis\r\n\r\n    fun getProvinsisFromRepo(){\r\n        //_movies.clear()\r\n        _provinsis.apply {\r\n            if(isEmpty()){\r\n                addAll(repository.getProvinsisFromJsonString())\r\n            }\r\n        }\r\n    }\r\n\r\n    override fun onCleared() {\r\n        super.onCleared()\r\n        _provinsis.clear()\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/id/ac/unhas/infocovid19/ui/provinsi/ProvinsiViewModel.kt	(revision 2ae3edaac22ccfc970562aa39fc97340903030de)
++++ app/src/main/java/id/ac/unhas/infocovid19/ui/provinsi/ProvinsiViewModel.kt	(date 1619524869655)
+@@ -14,7 +14,7 @@
+         //_movies.clear()
+         _provinsis.apply {
+             if(isEmpty()){
+-                addAll(repository.getProvinsisFromJsonString())
++//                addAll(repository.getProvinsisFromJsonString())
+             }
+         }
+     }
+Index: app/src/main/java/id/ac/unhas/infocovid19/ui/provinsi/ProvinsiAdapter.kt
+===================================================================
+--- app/src/main/java/id/ac/unhas/infocovid19/ui/provinsi/ProvinsiAdapter.kt	(revision 2ae3edaac22ccfc970562aa39fc97340903030de)
++++ app/src/main/java/id/ac/unhas/infocovid19/ui/provinsi/ProvinsiAdapter.kt	(revision 2ae3edaac22ccfc970562aa39fc97340903030de)
+@@ -1,4 +0,0 @@
+-package id.ac.unhas.infocovid19.ui.provinsi
+-
+-class ProvinsiAdapter {
+-}
+\ No newline at end of file
+Index: app/src/main/java/id/ac/unhas/infocovid19/ui/provinsi/ProvinsiListFragment.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package id.ac.unhas.infocovid19.ui.provinsi\r\n\r\nimport androidx.lifecycle.ViewModelProvider\r\nimport android.os.Bundle\r\nimport android.util.Log\r\nimport androidx.fragment.app.Fragment\r\nimport android.view.LayoutInflater\r\nimport android.view.View\r\nimport android.view.ViewGroup\r\nimport android.widget.ArrayAdapter\r\nimport android.widget.ListView\r\nimport id.ac.unhas.infocovid19.R\r\nimport id.ac.unhas.infocovid19.model.DataSource\r\n\r\nclass ProvinsiListFragment : Fragment() {\r\n\r\n    companion object {\r\n        fun newInstance() = ProvinsiListFragment()\r\n    }\r\n\r\n    private lateinit var viewModel: ProvinsiViewModel\r\n    private lateinit var viewModelFactory: ProvinsiViewModelFactory\r\n\r\n    private lateinit var listView: ListView\r\n\r\n    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,\r\n                              savedInstanceState: Bundle?): View {\r\n        return inflater.inflate(R.layout.provinsilist_fragment, container, false)\r\n    }\r\n\r\n    override fun onActivityCreated(savedInstanceState: Bundle?) {\r\n        super.onActivityCreated(savedInstanceState)\r\n\r\n    }\r\n\r\n    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {\r\n        super.onViewCreated(view, savedInstanceState)\r\n        val jsonList:String =\r\n            activity?.applicationContext?.let {\r\n                DataSource.getJsonDataFromAsset(it, \"provinsi.json\")\r\n            }.toString()\r\n\r\n        val provinsiRepository = ProvinsiRepository(jsonList)\r\n\r\n        viewModelFactory =ProvinsiViewModelFactory(provinsiRepository)\r\n\r\n        viewModel = ViewModelProvider(this,viewModelFactory).get(ProvinsiViewModel::class.java)\r\n\r\n        viewModel.getProvinsisFromRepo()\r\n\r\n        Log.d(\"MainFragment\",\"createView\")\r\n        listView = view.findViewById(R.id.list_view_provinsi)\r\n\r\n        val listItems = arrayOfNulls<String>(viewModel.provinsis.size)\r\n\r\n        viewModel.provinsis.forEachIndexed { index, provinsi ->\r\n            listItems[index] = provinsi.toString()\r\n        }\r\n\r\n        val adapter = context?.let { ArrayAdapter(it,R.layout.listview_item_provinsi,listItems) }\r\n\r\n        listView.adapter = adapter\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/id/ac/unhas/infocovid19/ui/provinsi/ProvinsiListFragment.kt	(revision 2ae3edaac22ccfc970562aa39fc97340903030de)
++++ app/src/main/java/id/ac/unhas/infocovid19/ui/provinsi/ProvinsiListFragment.kt	(date 1619527802703)
+@@ -9,8 +9,18 @@
+ import android.view.ViewGroup
+ import android.widget.ArrayAdapter
+ import android.widget.ListView
++import id.ac.unhas.infocovid19.BuildConfig
++import androidx.recyclerview.widget.LinearLayoutManager
+ import id.ac.unhas.infocovid19.R
++import id.ac.unhas.infocovid19.model.DataProvinsi
+ import id.ac.unhas.infocovid19.model.DataSource
++import id.ac.unhas.infocovid19.network.ApiEndPoint
++import kotlinx.android.synthetic.main.provinsilist_fragment.*
++import retrofit2.Call
++import retrofit2.Callback
++import retrofit2.Response
++import retrofit2.Retrofit
++import retrofit2.converter.gson.GsonConverterFactory
+ 
+ class ProvinsiListFragment : Fragment() {
+ 
+@@ -20,11 +30,13 @@
+ 
+     private lateinit var viewModel: ProvinsiViewModel
+     private lateinit var viewModelFactory: ProvinsiViewModelFactory
+-
++    private lateinit var linearLayoutManager: LinearLayoutManager
+     private lateinit var listView: ListView
+ 
+-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+-                              savedInstanceState: Bundle?): View {
++    override fun onCreateView(
++        inflater: LayoutInflater, container: ViewGroup?,
++        savedInstanceState: Bundle?
++    ): View {
+         return inflater.inflate(R.layout.provinsilist_fragment, container, false)
+     }
+ 
+@@ -35,31 +47,56 @@
+ 
+     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+         super.onViewCreated(view, savedInstanceState)
+-        val jsonList:String =
+-            activity?.applicationContext?.let {
+-                DataSource.getJsonDataFromAsset(it, "provinsi.json")
+-            }.toString()
++        //buat objek retrofit
++        val builder = Retrofit.Builder()
++            .baseUrl("https://api.kawalcorona.com/")//from gradle : "https://api.kawalcorona.com/"
++            .addConverterFactory(GsonConverterFactory.create())
++        val retrofit = builder.build()
++
++        var apiEndpoint = retrofit.create(ApiEndPoint::class.java)
+ 
+-        val provinsiRepository = ProvinsiRepository(jsonList)
++        apiEndpoint.getDataProvinsi().enqueue(object : Callback<DataProvinsi> {
++            override fun onFailure(call: Call<DataProvinsi>, t: Throwable) {
++                Log.e("Network Error", "Error: ${t.message}")
++            }
+ 
+-        viewModelFactory =ProvinsiViewModelFactory(provinsiRepository)
++            override fun onResponse(call: Call<DataProvinsi>, response: Response<DataProvinsi>) {
++                val dataProvinsi = response.body()
++                Log.d("Debugging", dataProvinsi.toString());
++                val adapter = context?.let {
++                    ArrayAdapter(
++                        it, R.layout.listview_item_provinsi,
++                        toListOfStrings(dataProvinsi)
++                    )
++                }
+ 
+-        viewModel = ViewModelProvider(this,viewModelFactory).get(ProvinsiViewModel::class.java)
++                listView.adapter = adapter
++            }
+ 
+-        viewModel.getProvinsisFromRepo()
++        })
++
++//        val jsonList:String =
++//            activity?.applicationContext?.let {
++//                DataSource.getJsonDataFromAsset(it, "provinsi.json")
++//            }.toString()
++//
++//        val provinsiRepository = ProvinsiRepository(jsonList)
++//
++//        viewModelFactory =ProvinsiViewModelFactory(provinsiRepository)
++//
++//        viewModel = ViewModelProvider(this,viewModelFactory).get(ProvinsiViewModel::class.java)
++//
++//        viewModel.getProvinsisFromRepo()
+ 
+-        Log.d("MainFragment","createView")
+-        listView = view.findViewById(R.id.list_view_provinsi)
++        Log.d("MainFragment", "createView")
++    }
+ 
+-        val listItems = arrayOfNulls<String>(viewModel.provinsis.size)
++    private fun toListOfStrings(dataProvinsi: DataProvinsi?): Array<String?> {
++        val listItems = arrayOfNulls<String>(dataProvinsi?.size ?: 0)
+ 
+-        viewModel.provinsis.forEachIndexed { index, provinsi ->
++        dataProvinsi?.forEachIndexed { index, provinsi ->
+             listItems[index] = provinsi.toString()
+         }
+-
+-        val adapter = context?.let { ArrayAdapter(it,R.layout.listview_item_provinsi,listItems) }
+-
+-        listView.adapter = adapter
++        return listItems;
+     }
+-
+ }
+Index: app/src/main/res/values/strings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><resources>\r\n    <string name=\"app_name\">InfoCovid19</string>\r\n</resources>\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/res/values/strings.xml	(revision 2ae3edaac22ccfc970562aa39fc97340903030de)
++++ app/src/main/res/values/strings.xml	(date 1618467153095)
+@@ -1,3 +1,5 @@
+ <resources>
+     <string name="app_name">InfoCovid19</string>
++    <string name="nama_provinsi">Nama Provinsi</string>
++    <string name="data_provinsi">Data Provinsi</string>
+ </resources>
+Index: app/src/main/java/id/ac/unhas/infocovid19/network/ApiEndPoint.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/id/ac/unhas/infocovid19/network/ApiEndPoint.kt	(date 1619527405157)
++++ app/src/main/java/id/ac/unhas/infocovid19/network/ApiEndPoint.kt	(date 1619527405157)
+@@ -0,0 +1,10 @@
++package id.ac.unhas.infocovid19.network
++
++import id.ac.unhas.infocovid19.model.DataProvinsi
++import retrofit2.Call
++import retrofit2.http.GET
++
++interface ApiEndPoint {
++    @GET("indonesia/provinsi")
++    fun getDataProvinsi(): Call<DataProvinsi>
++}
+Index: gradle/wrapper/gradle-wrapper.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>#Wed Mar 25 22:25:41 SGT 2020\r\ndistributionBase=GRADLE_USER_HOME\r\ndistributionPath=wrapper/dists\r\nzipStoreBase=GRADLE_USER_HOME\r\nzipStorePath=wrapper/dists\r\ndistributionUrl=https\\://services.gradle.org/distributions/gradle-5.6.4-all.zip\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>windows-1252
+===================================================================
+--- gradle/wrapper/gradle-wrapper.properties	(revision 2ae3edaac22ccfc970562aa39fc97340903030de)
++++ gradle/wrapper/gradle-wrapper.properties	(date 1618368908484)
+@@ -1,6 +1,6 @@
+-#Wed Mar 25 22:25:41 SGT 2020
++#Wed Apr 14 10:55:08 SGT 2021
+ distributionBase=GRADLE_USER_HOME
+ distributionPath=wrapper/dists
+ zipStoreBase=GRADLE_USER_HOME
+ zipStorePath=wrapper/dists
+-distributionUrl=https\://services.gradle.org/distributions/gradle-5.6.4-all.zip
++distributionUrl=https\://services.gradle.org/distributions/gradle-6.5-all.zip
+Index: build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>// Top-level build file where you can add configuration options common to all sub-projects/modules.\r\n\r\nbuildscript {\r\n    ext.kotlin_version = '1.3.72'\r\n    repositories {\r\n        google()\r\n        jcenter()\r\n        \r\n    }\r\n    dependencies {\r\n        classpath 'com.android.tools.build:gradle:3.6.1'\r\n        classpath \"org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version\"\r\n\r\n        // NOTE: Do not place your application dependencies here; they belong\r\n        // in the individual module build.gradle files\r\n    }\r\n}\r\n\r\nallprojects {\r\n    repositories {\r\n        google()\r\n        jcenter()\r\n        \r\n    }\r\n}\r\n\r\ntask clean(type: Delete) {\r\n    delete rootProject.buildDir\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- build.gradle	(revision 2ae3edaac22ccfc970562aa39fc97340903030de)
++++ build.gradle	(date 1618368858145)
+@@ -8,7 +8,7 @@
+         
+     }
+     dependencies {
+-        classpath 'com.android.tools.build:gradle:3.6.1'
++        classpath 'com.android.tools.build:gradle:4.1.2'
+         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+ 
+         // NOTE: Do not place your application dependencies here; they belong
+Index: app/src/main/AndroidManifest.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<manifest xmlns:android=\"http://schemas.android.com/apk/res/android\"\r\n    package=\"id.ac.unhas.infocovid19\">\r\n\r\n    <application\r\n        android:allowBackup=\"true\"\r\n        android:icon=\"@mipmap/ic_launcher\"\r\n        android:label=\"@string/app_name\"\r\n        android:roundIcon=\"@mipmap/ic_launcher_round\"\r\n        android:supportsRtl=\"true\"\r\n        android:theme=\"@style/AppTheme\">\r\n        <activity android:name=\".MainActivity\">\r\n            <intent-filter>\r\n                <action android:name=\"android.intent.action.MAIN\" />\r\n\r\n                <category android:name=\"android.intent.category.LAUNCHER\" />\r\n            </intent-filter>\r\n        </activity>\r\n    </application>\r\n\r\n</manifest>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/AndroidManifest.xml	(revision 2ae3edaac22ccfc970562aa39fc97340903030de)
++++ app/src/main/AndroidManifest.xml	(date 1619523730067)
+@@ -1,13 +1,16 @@
+ <?xml version="1.0" encoding="utf-8"?>
+ <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+     package="id.ac.unhas.infocovid19">
+-
++    <uses-permission android:name="android.permission.INTERNET" />
++<uses-permission
++    android:name="android.permission.INTERNET"/>
+     <application
+         android:allowBackup="true"
+         android:icon="@mipmap/ic_launcher"
+         android:label="@string/app_name"
+         android:roundIcon="@mipmap/ic_launcher_round"
+         android:supportsRtl="true"
++        android:usesCleartextTraffic="true"
+         android:theme="@style/AppTheme">
+         <activity android:name=".MainActivity">
+             <intent-filter>
+Index: app/src/main/java/id/ac/unhas/infocovid19/model/DataProvinsiAlt.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/id/ac/unhas/infocovid19/model/DataProvinsiAlt.kt	(date 1619244515959)
++++ app/src/main/java/id/ac/unhas/infocovid19/model/DataProvinsiAlt.kt	(date 1619244515959)
+@@ -0,0 +1,12 @@
++package id.ac.unhas.infocovid19.model
++
++class DataProvinsiAlt : ArrayList<DataProvinsiAltItem>()
++
++data class DataProvinsiAltItem(
++    val FID: Int,
++    val Kasus_Meni: Int,
++    val Kasus_Posi: Int,
++    val Kasus_Semb: Int,
++    val Kode_Provi: Int,
++    val Provinsi: String
++)
+\ No newline at end of file
+Index: app/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>apply plugin: 'com.android.application'\r\napply plugin: 'kotlin-android'\r\napply plugin: 'kotlin-android-extensions'\r\n\r\nandroid {\r\n    compileSdkVersion 30\r\n    buildToolsVersion \"30.0.3\"\r\n\r\n    defaultConfig {\r\n        applicationId \"id.ac.unhas.infocovid19\"\r\n        minSdkVersion 21\r\n        targetSdkVersion 30\r\n        versionCode 1\r\n        versionName \"1.0\"\r\n\r\n        testInstrumentationRunner \"androidx.test.runner.AndroidJUnitRunner\"\r\n    }\r\n\r\n    buildTypes {\r\n        release {\r\n            minifyEnabled false\r\n            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'\r\n        }\r\n    }\r\n\r\n}\r\n\r\ndependencies {\r\n    implementation fileTree(dir: 'libs', include: ['*.jar'])\r\n    implementation \"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version\"\r\n    implementation 'androidx.appcompat:appcompat:1.2.0'\r\n    implementation 'androidx.core:core-ktx:1.3.2'\r\n    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'\r\n    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'\r\n    implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'\r\n    testImplementation 'junit:junit:4.13.2'\r\n    androidTestImplementation 'androidx.test.ext:junit:1.1.2'\r\n    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'\r\n\r\n    //gson json converter\r\n    implementation 'com.google.code.gson:gson:2.8.5'\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/build.gradle	(revision 2ae3edaac22ccfc970562aa39fc97340903030de)
++++ app/build.gradle	(date 1619527430548)
+@@ -5,6 +5,10 @@
+ android {
+     compileSdkVersion 30
+     buildToolsVersion "30.0.3"
++    compileOptions {
++        sourceCompatibility = 1.8
++        targetCompatibility = 1.8
++    }
+ 
+     defaultConfig {
+         applicationId "id.ac.unhas.infocovid19"
+@@ -14,6 +18,7 @@
+         versionName "1.0"
+ 
+         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
++
+     }
+ 
+     buildTypes {
+@@ -22,7 +27,6 @@
+             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+         }
+     }
+-
+ }
+ 
+ dependencies {
+@@ -33,10 +37,15 @@
+     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1'
++    implementation 'androidx.recyclerview:recyclerview:1.2.0'
+     testImplementation 'junit:junit:4.13.2'
+     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+ 
+     //gson json converter
+     implementation 'com.google.code.gson:gson:2.8.5'
++
++    //retrofit library
++    implementation 'com.squareup.retrofit2:retrofit:2.7.1'
++    implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
+ }
+Index: app/src/main/java/id/ac/unhas/infocovid19/ui/provinsi/ProvinsiRepository.kt
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package id.ac.unhas.infocovid19.ui.provinsi\r\n\r\nimport id.ac.unhas.infocovid19.model.DataProvinsi\r\nimport id.ac.unhas.infocovid19.model.DataSource\r\nimport id.ac.unhas.infocovid19.model.Provinsi\r\n\r\nclass ProvinsiRepository(\r\n    private val jsonString: String\r\n) {\r\n    fun getProvinsisFromJsonString() : ArrayList<Provinsi>{\r\n        val listProvinsi = ArrayList<Provinsi>()\r\n        val dataProvinsi: DataProvinsi = DataSource.createDataSet(jsonString)\r\n        dataProvinsi.data?.forEach {\r\n            if (it != null) {\r\n                listProvinsi.add(it)\r\n            }\r\n        }\r\n        return listProvinsi\r\n    }\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- app/src/main/java/id/ac/unhas/infocovid19/ui/provinsi/ProvinsiRepository.kt	(revision 2ae3edaac22ccfc970562aa39fc97340903030de)
++++ app/src/main/java/id/ac/unhas/infocovid19/ui/provinsi/ProvinsiRepository.kt	(date 1619524869648)
+@@ -7,6 +7,7 @@
+ class ProvinsiRepository(
+     private val jsonString: String
+ ) {
++    /*
+     fun getProvinsisFromJsonString() : ArrayList<Provinsi>{
+         val listProvinsi = ArrayList<Provinsi>()
+         val dataProvinsi: DataProvinsi = DataSource.createDataSet(jsonString)
+@@ -17,4 +18,6 @@
+         }
+         return listProvinsi
+     }
++
++     */
+ }
